@@ -1,6 +1,7 @@
 import React from "react"
 import Header from "./components/header";
 import Sidebar from "./components/sidebar";
+import BreadCrumbs from "./components/breadcrumbs";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -8,8 +9,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <Sidebar/>
       <div className="flex-1 flex flex-col">
         <Header />
-        <main className="p-6 flex-1">{children}</main>
+        <main className="p-6 flex-1">
+            <BreadCrumbs/>
+            {children}
+        </main>
       </div>
     </div>
   );
-}
+}   
