@@ -101,7 +101,7 @@ export default function Sidebar() {
                   </button>
                   {openMenu === menu.label && (
                     <div
-                      className={`ml-6 mt-1 space-y-1 overflow-hidden transition-all duration-300 ${
+                      className={`ml-6 mt-1 space-y-1 overflow-hidden transition-all duration-700 ${
                         openMenu === menu.label
                           ? "max-h-40 opacity-100"
                           : "max-h-0 opacity-0"
