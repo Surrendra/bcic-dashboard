@@ -23,7 +23,7 @@ const menus = [
         label: "Pelanggan",
       },
       {
-        url: "#",
+        url: "dashboard/user",
         label: "Pengguna Reguler",
       },
     ],
