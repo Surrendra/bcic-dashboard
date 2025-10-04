@@ -81,41 +81,55 @@ export default function Sidebar() {
           </button>
         </div>
         <nav className="flex-1 p-4 space-y-2">
-            {menus.map((menu,index) => (
-                <div key={index}>
-                    {menu.childs ? (
-                        <button className="flex items-center justify-between w-full p-2 rounded hover:bg-gray-800">
-                            <div className="flex items-center gap-2">
-                                <menu.icon size={20}/>
-                                <span>{menu.label}</span>
-                            </div>
-                            {openMenu === menu.label ? (
-                                <ChevronDown size={16}/>
-                            ) : (
-                                <ChevronRight size={16}/>
-                            )}
-                        </button>
+          {menus.map((menu, index) => (
+            <div key={index}>
+              {menu.childs ? (
+                <>
+                  <button
+                    className="flex items-center justify-between w-full p-2 rounded hover:bg-gray-800"
+                    onClick={() => toggleMenu(menu.label)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <menu.icon size={20} />
+                      <span>{menu.label}</span>
+                    </div>
+                    {openMenu === menu.label ? (
+                      <ChevronDown size={16} />
                     ) : (
-                        <Link href={menu.url} className="flex items-center gap-2 p-2 rounded-2xl hover:bg-gray-800">
-                            <menu.icon size={20}/>
-                            <span>{menu.label}</span>
-                        </Link>
+                      <ChevronRight size={16} />
                     )}
-                </div>
-            ))}
-          {/* <ul className="">
-            {menus.map((menu, index) => (
-              <li key={index}>
+                  </button>
+                  {openMenu === menu.label && (
+                    <div
+                      className={`ml-6 mt-1 space-y-1 overflow-hidden transition-all duration-300 ${
+                        openMenu === menu.label
+                          ? "max-h-40 opacity-100"
+                          : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      {menu.childs?.map((child, i) => (
+                        <Link
+                          href={child.url}
+                          key={i}
+                          className="block p-2 rounded-2xl hover:bg-gray-800 text-sm"
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
                 <Link
                   href={menu.url}
-                  className="flex items-center gap-3 p-2 rounded-2xl hover:bg-gray-800"
+                  className="flex items-center gap-2 p-2 rounded-2xl hover:bg-gray-800"
                 >
                   <menu.icon size={20} />
                   <span>{menu.label}</span>
                 </Link>
-              </li>
-            ))}
-          </ul> */}
+              )}
+            </div>
+          ))}
         </nav>
       </aside>
     </>
