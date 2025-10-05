@@ -1,11 +1,12 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
-import { Menu,LayoutDashboard,User,Settings, ChevronDown, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Menu,LayoutDashboard,User,Settings, ChevronDown, ChevronRight, SidebarOpen } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const menus = [
   {
-    url: "#",
+    url: "/dashboard",
     label: "Beranda",
     icon: LayoutDashboard,
   },
@@ -15,15 +16,15 @@ const menus = [
     icon: User,
     childs: [
       {
-        url: "#",
+        url: "/#",
         label: "Pemandu",
       },
       {
-        url: "#",
+        url: "/#",
         label: "Pelanggan",
       },
       {
-        url: "dashboard/user",
+        url: "/dashboard/user",
         label: "Pengguna Reguler",
       },
     ],
@@ -48,6 +49,17 @@ const menus = [
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
   const [openMenu,setOpenMenu] = useState<string | null>(null);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    menus.forEach(menu => {
+        if (menu.childs?.some((child) => pathname.startsWith(child.url))) {
+          console.log(menu.label);
+          setOpenMenu(menu.label)
+        }
+    });
+    console.log(pathname);
+  },[pathname]);
 
   const toggleMenu = (label:string) => {
     setOpenMenu(openMenu === label ? null : label);
@@ -55,7 +67,7 @@ export default function Sidebar() {
   return (
     <>
       <button
-        className="md:hidden p-2 m-2 bg-gray-200 rounded"
+        className="lg:hidden p-2 m-2 bg-gray-200 rounded"
         onClick={() => setOpen(true)}
       >
         <Menu size={24} />
@@ -67,8 +79,8 @@ export default function Sidebar() {
         />
       )}
       <aside
-        className={`fixed md:static top-0 left-0 h-screen w-64 bg-gray-900 text-white flex flex-col transform transition-transform duration-300 z-50
-          ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+        className={`fixed lg:static top-0 left-0 h-screen w-64 bg-gray-900 text-white flex flex-col transform transition-transform duration-300 z-50
+          ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
       >
         <div className="p-4 text-xl font-bold border-b border-gray-700">
@@ -111,7 +123,12 @@ export default function Sidebar() {
                         <Link
                           href={child.url}
                           key={i}
-                          className="block p-2 rounded-2xl hover:bg-gray-800 text-sm"
+                          onClick={() => setOpen(false)}
+                          className={`block p-2 rounded-2xl hover:bg-gray-800 text-sm ${
+                            pathname == child.url
+                              ? "bg-gray-100/10 font-semibold"
+                              : ""
+                          }`}
                         >
                           {child.label}
                         </Link>
@@ -122,6 +139,7 @@ export default function Sidebar() {
               ) : (
                 <Link
                   href={menu.url}
+                  onClick={() => setOpen(false)}
                   className="flex items-center gap-2 p-2 rounded-2xl hover:bg-gray-800"
                 >
                   <menu.icon size={20} />
